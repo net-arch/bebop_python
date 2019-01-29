@@ -36,48 +36,59 @@ if (success):
         if ch == "t":
             print("take off")
             bebop.safe_takeoff(10)
+            c.send(("controller received "+ch).encode('utf-8'))
 
         elif ch == "w":
             print("move front")
-            bebop.fly_direct(roll=0, pitch=50, yaw=0, vertical_movement=0, duration=1)
+            bebop.fly_direct(roll=0, pitch=30, yaw=0, vertical_movement=0, duration=1)
+            c.send(("controller received "+ch).encode('utf-8'))
         elif ch == "s":
             print("move back")
-            bebop.fly_direct(roll=0, pitch=-50, yaw=0, vertical_movement=0, duration=1)
+            bebop.fly_direct(roll=0, pitch=-30, yaw=0, vertical_movement=0, duration=1)
+            c.send(("controller received "+ch).encode('utf-8'))
         elif ch == "a":
             print("move left")
-            bebop.fly_direct(roll=-50, pitch=0, yaw=0, vertical_movement=0, duration=1)
+            bebop.fly_direct(roll=-30, pitch=0, yaw=0, vertical_movement=0, duration=1)
+            c.send(("controller received "+ch).encode('utf-8'))
         elif ch == "d":
             print("move right")
-            bebop.fly_direct(roll=50, pitch=0, yaw=0, vertical_movement=0, duration=1)
+            bebop.fly_direct(roll=30, pitch=0, yaw=0, vertical_movement=0, duration=1)
+            c.send(("controller received "+ch).encode('utf-8'))
 
         elif ch == "[A":
             print("move up")
             bebop.fly_direct(roll=0, pitch=0, yaw=0, vertical_movement=20, duration=0.5)
+            c.send(("controller received "+ch).encode('utf-8'))
         elif ch == "[B":
             print("move down")
             bebop.fly_direct(roll=0, pitch=0, yaw=0, vertical_movement=-20, duration=0.5)
+            c.send(("controller received "+ch).encode('utf-8'))
         elif ch == "[C":
             print("move clockwise")
             bebop.fly_direct(roll=0, pitch=0, yaw=25, vertical_movement=0, duration=1)
+            c.send(("controller received "+ch).encode('utf-8'))
         elif ch == "[D":
             print("move conclockwise")
             bebop.fly_direct(roll=0, pitch=0, yaw=-25, vertical_movement=0, duration=1)
+            c.send(("controller received "+ch).encode('utf-8'))
 
         elif ch == "f":
             print("flip")
             bebop.flip(direction="front")
+            c.send(("controller received "+ch).encode('utf-8'))
 
-        elif ch == "l" or len(ch) == 0:
+        elif ch == "l":
             print("land")
             bebop.safe_land(10)
+            c.send(("controller received "+ch).encode('utf-8'))
 
-        elif ch == "q":
+        elif ch == "q" or len(ch) == 0: # ソケットがSIGPIPEになったときも着地
             print("end")
             bebop.safe_land(10)
+            c.send(("controller received "+ch).encode('utf-8'))
             c.close()
             break
         
-
     print("DONE - disconnecting")
     bebop.smart_sleep(5)
     print(bebop.sensors.battery)
