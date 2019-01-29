@@ -3,6 +3,36 @@ import sys
 import termios
 import tty
 
+def send_to(t):
+    if t == 0:
+        print("send to all drones.")
+        while True:
+                command = sys.stdin.read(1)
+                if command == "c":
+                    break
+                for s in sockets:
+                    s.send(command.encode('utf-8'))
+                if command == "q":
+                    break
+    elif t <= 3:
+        print("send to drone %s" %target)
+        while True:
+            command = sys.stdin.read(1)
+            if command == "c":
+                break
+            sockets[t-1].send(command.encode('utf-8'))
+            if command == "q":
+                break
+    elif t == 9:
+        print("end")
+        command = "q"
+        for s in sockets:
+            s.send(command.encode('utf-8'))
+    else:
+        return
+
+
+
 fd = sys.stdin.fileno()
 old = termios.tcgetattr(fd)
 
@@ -20,11 +50,12 @@ for h in hosts:
 try:
     tty.setcbreak(sys.stdin.fileno())
     while True:
-        ch = sys.stdin.read(1)
-        for s in sockets:
-            s.send(ch.encode('utf-8'))
-        if ch == "q":
-            break
+        print("select target(1~3). 0:all 9:end")
+        target = sys.stdin.read(1) # 1文字読み込み
+        if target.isdecimal(): # 入力が数字かどうか判定
+            send_to(int(target))
+        else:
+            print("invalid literal!")
 
 finally:  
     termios.tcsetattr(fd, termios.TCSANOW, old)
