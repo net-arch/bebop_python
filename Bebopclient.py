@@ -23,11 +23,6 @@ def send_to(t):
             sockets[t-1].send(command.encode('utf-8'))
             if command == "q":
                 break
-    elif t == 9:
-        print("end")
-        command = "q"
-        for s in sockets:
-            s.send(command.encode('utf-8'))
     else:
         return
 
@@ -53,7 +48,19 @@ try:
         print("select target(1~3). 0:all 9:end")
         target = sys.stdin.read(1) # 1文字読み込み
         if target.isdecimal(): # 入力が数字かどうか判定
-            send_to(int(target))
+            if int(target) == 9:
+                print("end")
+                command = "q"
+                for s in sockets:
+                    s.send(command.encode('utf-8'))
+                break
+            else:
+                send_to(int(target))if target == 9:
+            print("end")
+            command = "q"
+            for s in sockets:
+                s.send(command.encode('utf-8'))
+            break
         else:
             print("invalid literal!")
 
