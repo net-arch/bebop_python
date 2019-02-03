@@ -65,11 +65,11 @@ if (success):
             c.send(("controller received "+ch).encode('utf-8'))
         elif ch == "[C":
             print("move clockwise")
-            bebop.fly_direct(roll=0, pitch=0, yaw=25, vertical_movement=0, duration=1)
+            bebop.fly_direct(roll=0, pitch=0, yaw=40, vertical_movement=0, duration=1)
             c.send(("controller received "+ch).encode('utf-8'))
         elif ch == "[D":
             print("move conclockwise")
-            bebop.fly_direct(roll=0, pitch=0, yaw=-25, vertical_movement=0, duration=1)
+            bebop.fly_direct(roll=0, pitch=0, yaw=-40, vertical_movement=0, duration=1)
             c.send(("controller received "+ch).encode('utf-8'))
 
         elif ch == "f":
