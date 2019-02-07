@@ -2,6 +2,7 @@ import socket
 import sys 
 import termios
 import tty
+from time import sleep
 
 def send_to(t):
     if t == 0:
@@ -10,6 +11,11 @@ def send_to(t):
                 command = sys.stdin.read(1)
                 if command == "c":
                     break
+                elif command == "h":
+                    while True:
+                        for s in sockets:
+                            s.send(command.encode('utf-8'))
+                        sleep(5)        
                 for s in sockets:
                     s.send(command.encode('utf-8'))
                 if command == "q":
@@ -35,9 +41,12 @@ sockets = []
 
 hosts = ["192.168.1.1", "192.168.1.2", "192.168.1.3"]
 port = 8080
+timeout = 20
+nodelay = 1
 
 for h in hosts:
     sock = socket.socket()
+    sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, nodelay)
     sock.connect((h, port))
     sockets.append(sock)
 
@@ -55,7 +64,7 @@ try:
                     s.send(command.encode('utf-8'))
                 break
             else:
-                send_to(int(target))if target == 9:
+                send_to(int(target))
             print("end")
             command = "q"
             for s in sockets:
