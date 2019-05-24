@@ -9,7 +9,7 @@ s.bind(('', port))  # socketに名前をつける
 print("listening")
 s.listen(5)  # 接続待ち
 c, addr = s.accept()  # 接続要求の取り出し
-c.settimeout(20)
+c.settimeout(10)
 
 bebop = Bebop(drone_type="Bebop2")
 
