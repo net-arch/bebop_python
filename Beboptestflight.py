@@ -79,6 +79,9 @@ try:
                 print("land")
                 bebop.safe_land(10)
 
+            elif target == "i":
+                print(bebop.sensors.sensors_dict)
+
             elif target == "q":
                 print("end")
                 bebop.safe_land(10)
